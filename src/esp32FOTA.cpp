@@ -445,6 +445,18 @@ void esp32FOTA::stopStream()
 
 
 // OTA Logic
+// OTA Logic
+bool esp32FOTA::execOTASPIFFS()
+{
+    setupStream();
+    bool ret;
+    if(!_flashFileSystemUrl.isEmpty() ) {
+        ret = execOTA( U_SPIFFS, false );
+    }
+    stopStream();
+    return ret;
+}
+
 bool esp32FOTA::execOTA()
 {
     setupStream();
@@ -722,6 +734,7 @@ bool esp32FOTA::checkJSONManifest(JsonVariant doc)
 
     if( has_url ) { // Basic scenario: a complete URL was provided in the JSON manifest, all other keys will be ignored
         _firmwareUrl = doc["url"].as<const char*>();
+        _flashFileSystemUrl = doc["spiffs"].as<const char*>();
         if( has_hostname ) { // If the manifest provides both, warn the user
             log_w("Manifest provides both url and host - Using URL");
         }

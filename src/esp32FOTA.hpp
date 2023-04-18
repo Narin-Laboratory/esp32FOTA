@@ -248,6 +248,7 @@ public:
 
   void handle();
 
+  bool execOTASPIFFS();
   bool execOTA();
   bool execOTA( int partition, bool restart_after = true );
   bool execHTTPcheck();
